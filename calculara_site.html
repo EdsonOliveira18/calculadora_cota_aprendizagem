@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calculadora de Cota de Aprendiz</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+        input[type="number"] {
+            width: 100%;
+            padding: 8px;
+            margin: 5px 0;
+            box-sizing: border-box;
+        }
+        button {
+            padding: 10px 15px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #45a049;
+        }
+        .results {
+            margin-top: 20px;
+        }
+        .results p {
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+
+<h1>Calculadora de Cota de Aprendiz</h1>
+<p>Calcule e saiba agora qual é a cota da sua empresa:</p>
+
+<form id="formularioCota">
+    <label for="totalEmpregados">Quantidade de Empregados (do último CAGED):</label>
+    <input type="number" id="totalEmpregados" name="totalEmpregados" required>
+
+    <label for="exclusoesLegais">Exclusões Legais:</label>
+    <input type="number" id="exclusoesLegais" name="exclusoesLegais" required>
+
+    <label for="formacaoSuperior">Funções com exigência de formação técnica ou superior:</label>
+    <input type="number" id="formacaoSuperior" name="formacaoSuperior" required>
+
+    <label for="cargosDirecao">Cargos de direção e de gerência ou de confiança nos termos do inciso II, parágrafo único do art. 62 CLT:</label>
+    <input type="number" id="cargosDirecao" name="cargosDirecao" required>
+
+    <label for="contratoSazonal">Funções que sejam objeto de contrato por prazo determinado cuja vigência dependa da sazonalidade da atividade econômica:</label>
+    <input type="number" id="contratoSazonal" name="contratoSazonal" required>
+
+    <label for="ambientesRisco">Funções em ambientes de trabalho previstos na portaria 20/2001 e 04/2002 (Ref. Riscos):</label>
+    <input type="number" id="ambientesRisco" name="ambientesRisco" required>
+
+    <label for="trabalhoTemporario">Trabalhadores com contrato de trabalho temporário (conforme a Lei nº 6019/74):</label>
+    <input type="number" id="trabalhoTemporario" name="trabalhoTemporario" required>
+
+    <label for="trabalhadoresTerceirizados">Trabalhadores terceirizados (excluídos da tomadora e incluídos na prestadora):</label>
+    <input type="number" id="trabalhadoresTerceirizados" name="trabalhadoresTerceirizados" required>
+
+    <label for="formacaoMoral">Atividades desenvolvidas em ambientes que comprometam a formação moral do adolescente:</label>
+    <input type="number" id="formacaoMoral" name="formacaoMoral" required>
+
+    <button type="button" onclick="calcularCota()">Calcular Cota</button>
+</form>
+
+<div class="results" id="resultados">
+    <!-- Resultados aparecerão aqui -->
+</div>
+
+<script>
+    function calcularCota() {
+        // Obter valores dos campos de entrada
+        const totalEmpregados = parseInt(document.getElementById('totalEmpregados').value);
+        const exclusoesLegais = parseInt(document.getElementById('exclusoesLegais').value);
+        const formacaoSuperior = parseInt(document.getElementById('formacaoSuperior').value);
+        const cargosDirecao = parseInt(document.getElementById('cargosDirecao').value);
+        const contratoSazonal = parseInt(document.getElementById('contratoSazonal').value);
+        const ambientesRisco = parseInt(document.getElementById('ambientesRisco').value);
+        const trabalhoTemporario = parseInt(document.getElementById('trabalhoTemporario').value);
+        const trabalhadoresTerceirizados = parseInt(document.getElementById('trabalhadoresTerceirizados').value);
+        const formacaoMoral = parseInt(document.getElementById('formacaoMoral').value);
+
+        // Calcular total de exclusões legais
+        const totalExclusoes = exclusoesLegais + formacaoSuperior + cargosDirecao + contratoSazonal + ambientesRisco + trabalhoTemporario + trabalhadoresTerceirizados + formacaoMoral;
+
+        // Calcular saldo
+        const saldo = totalEmpregados - totalExclusoes;
+
+        // Calcular cotas
+        const cotaMinima = Math.max(0.05 * saldo, 1);
+        const cotaMaxima = 0.15 * saldo;
+
+        // Exibir resultados
+        const resultadosDiv = document.getElementById('resultados');
+        resultadosDiv.innerHTML = `
+            <p>Total das Exclusões Legais: ${totalExclusoes}</p>
+            <p>Saldo (Empregados - Exclusões): ${saldo}</p>
+            <p>Cota Mínima (5% do Saldo): ${cotaMinima.toFixed(2)}</p>
+            <p>Cota Máxima (15% do Saldo): ${cotaMaxima.toFixed(2)}</p>
+        `;
+    }
+</script>
+
+</body>
+</html>
